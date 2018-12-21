@@ -145,4 +145,4 @@ $ npm install hexo-deployer-git --save
 最后执行`$ hexo d`命令部署到远程仓库，部署成功后就可以通过访问 http://username.github.io 进入博客网站了（ username 替换成你自己的 GitHub 用户名）。
 ## 他山之石
 - [如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
-- 
+- [网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)

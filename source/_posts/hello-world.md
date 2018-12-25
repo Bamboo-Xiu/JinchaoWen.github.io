@@ -143,6 +143,28 @@ local_search:
 $ npm install hexo-deployer-git --save
 ```
 最后执行`$ hexo d`命令部署到远程仓库，部署成功后就可以通过访问 http://username.github.io 进入博客网站了（ username 替换成你自己的 GitHub 用户名）。
+## 更上一层楼
+### 统计访客流量
+&emsp;&emsp;超级建议从一开始就将这个小小的插件运用到自己的博客网站中，可以看到自己博客网站的阅读量，也是一种精神上的支持。这里借用了 [不蒜子](http://ibruce.info/2015/04/04/busuanzi/) 的统计插件。找到 `X:\xxxxx\Hexo\themes\next\layout\_partials` 路径下的 `footer.swig` 文件，用EditPlus或记事本打开，在最底部添加以下代码：  
+```
+{% if theme.footer.counter %}
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+
+{% endif %}
+```
+有些博客中不蒜子插件并不是最新的，所以可能会失效，建议以不蒜子官方帖子为准。
+&emsp;&emsp;然后还要在next主题的设置文件中添加设置，就是这个文件： `themes/next/_config.yml` 找到footer字段，添加 `counter:true` ，如下所示：
+```
+footer:
+  counter: true
+```
+到这里，可以保存一下，运行 `hexo g` 命令生成一下静态页面；然后运行 `hexo s` 命令启动本地服务器，在浏览器中输入 `http://localhost:4000 `查看效果，如果显示不对，仔细检查修改。
 ## 他山之石
 - [如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
 - [网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)

@@ -164,7 +164,9 @@ $ npm install hexo-deployer-git --save
 footer:
   counter: true
 ```
-到这里，可以保存一下，运行 `hexo g` 命令生成一下静态页面；然后运行 `hexo s` 命令启动本地服务器，在浏览器中输入 `http://localhost:4000 `查看效果，如果显示不对，仔细检查修改。
+到这里，可以保存一下，运行 `hexo g` 命令生成一下静态页面；然后运行 `hexo s` 命令启动本地服务器，在浏览器中输入 `http://localhost:4000 `查看效果，如果显示不对，仔细检查修改，如还有问题，欢迎邮箱联系 `wenjinchao@outlook.com`。
+### 多终端维护博客网站
+&emsp;&emsp;相信很多同学跟我一样，公司有一个本，自己有一个本，家里还有一个台式机，这么多设备能不能一起来维护自己的博客网站呢？git不就是这种思想吗？当然是可以的。
 ## 他山之石
 - [如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
 - [网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)

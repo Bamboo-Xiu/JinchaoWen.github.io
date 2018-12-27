@@ -30,7 +30,7 @@ $ npm install hexo-cli -g    //安装 hexo 扩展插件
 $ hexo init blog    //在所选文件夹中创建一个 blog 文件夹，并把 hexo 相关代码下载到这个文件夹中  
 $ cd blog    //进入到 blog 目录  
 $ npm install    //安装 hexo  
-$ hexo sever    //启动本地服务
+$ hexo server    //启动本地服务
 ```
 执行完上述命令后，显示器应该会提示说 Hexo 正在 http://localhost:4000 上运行：  
 ![2](hello-world/2.jpg)
@@ -166,7 +166,20 @@ footer:
 ```
 到这里，可以保存一下，运行 `hexo g` 命令生成一下静态页面；然后运行 `hexo s` 命令启动本地服务器，在浏览器中输入 `http://localhost:4000 `查看效果，如果显示不对，仔细检查修改，如还有问题，欢迎邮箱联系 `wenjinchao@outlook.com`。
 ### 多终端维护博客网站
-&emsp;&emsp;相信很多同学跟我一样，公司有一个本，自己有一个本，家里还有一个台式机，这么多设备能不能一起来维护自己的博客网站呢？git不就是这种思想吗？当然是可以的。
+&emsp;&emsp;相信很多同学跟我一样，公司有一个本，自己有一个本，家里还有一个台式机，这么多设备能不能一起来维护自己的博客网站呢？git不就是这种思想吗？当然是可以的。  
+&emsp;&emsp;首先在A电脑上按照上面的说明配置好了博客环境，以及可以正常发博客，拉取博客信息等。接下来，在A电脑的博客目录下打开Git Bash命令窗口，依次运行下面命令：
+```
+git branch hexo    //新建hexo分支
+git checkout hexo    //切换到hexo分支上
+git remote add origin git@github.com:yourname/yourname.github.io.git    //将本地与Github项目对接
+git push origin hexo    //push到Github项目的hexo分支上
+```
+执行完后，你自己的博客GitHub项目中就会多出一个hexo分支，这个分支就是用来作多终端同步的功能。   
+&emsp;&emsp;B电脑这边一开始也要像A电脑一样配置一下node、git等环境，具体就是完成“正式开干”的step1和step2，在这里我遇到过下面的问题，没有遇到的同学请跳过。  
+![7](hello-world/7.jpg)
+找度娘之后，运行 `npm cache clean` 命令清理npm之后就可以了，如果还不能清理，可用 `npm cache clean --force` 强制清理。为了让B电脑也能操作hexo分支，所以也要设置一下B电脑的SSH key，步骤可参考前文。  
+&emsp;&emsp;前面的工作准备完毕后，
 ## 他山之石
 - [如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
 - [网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)
+- [如何解决github+Hexo的博客多终端同步问题](https://blog.csdn.net/Monkey_LZL/article/details/60870891)

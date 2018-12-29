@@ -178,7 +178,30 @@ git push origin hexo    //push到Github项目的hexo分支上
 &emsp;&emsp;B电脑这边一开始也要像A电脑一样配置一下node、git等环境，具体就是完成“正式开干”的step1和step2，在这里我遇到过下面的问题，没有遇到的同学请跳过。  
 ![7](hello-world/7.jpg)
 找度娘之后，运行 `npm cache clean` 命令清理npm之后就可以了，如果还不能清理，可用 `npm cache clean --force` 强制清理。为了让B电脑也能操作hexo分支，所以也要设置一下B电脑的SSH key，步骤可参考前文。  
-&emsp;&emsp;前面的工作准备完毕后，
+&emsp;&emsp;前面的工作准备完毕后，就可以进入你想要存放博客文件的目录中依次执行下面的命令：
+```
+git clone -b hexo git@github.com:yourname/yourname.github.io.git    //将Github中hexo分支clone到本地B电脑
+cd yourname.github.io    //切换到刚刚clone的文件夹内
+npm install    //注意，这里一定要切换到刚刚clone的文件夹内执行，安装必要的所需组件，不用再init
+hexo new post "new blog name"    //新建一个.md文件，并编辑完成自己的博客内容
+git add source    //经测试每次只要更新source中的文件到Github中即可，因为只是新建了一篇新博客
+git commit -m "XX"
+git push origin hexo    //更新远程hexo分支
+hexo d -g    //生成博客静态页面，并将资源上传同步到远程博客网站中
+```
+执行完之后，就会发现刚刚在B电脑上新建的文章就出现在网站上了。所有的文章都会保存在 `\source\_posts` 目录中，以后可以直接打开这些 `.md` MarkDown格式的文件进行文章编辑，建议下载 `MarkdownPad` 软件进行编辑，支持预览。  
+&emsp;&emsp;小建议：在开始编写或修改文章，或者修改配置文件之前，一定要在本地 `hexo` 分支下先拉取一下远程的 `hexo` 分支，即执行命令
+```
+git pull origin hexo
+```
+然后进行修改，编辑完成之后，依次执行
+```
+git add source    //提交修改的内容
+git commit -m "XX"    //添加commit信息
+git push origin hexo    //将更新后的hexo推到远程的hexo分支
+hexo d -g    //生成博客静态页面，并将资源上传同步到远程博客网站中
+```
+过一段时间，就可以访问自己的博客网站查看更新后的博客内容了。
 ## 他山之石
 - [如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
 - [网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)

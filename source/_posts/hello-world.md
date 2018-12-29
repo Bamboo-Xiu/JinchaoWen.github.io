@@ -2,7 +2,7 @@
 title: Hexo+Github 搭建个人博客网站
 ---
 &emsp;&emsp;拥有自己的博客网站是一件很酷的事情。拖了很久，终于在近期成功搭建了自己的博客网站。现记录下搭建博客的方法步骤，以备不时之需。  
-&emsp;&emsp;先来看看效果（建议使用Chrome浏览器）： [修之竹的小院时光](//https://jinchaowen.github.io)  
+&emsp;&emsp;先来看看效果（建议使用Chrome浏览器）： [修之竹的小院时光](https://jinchaowen.github.io)  
 &emsp;&emsp;网上搭建博客网站的方法有很多，个人推荐使用 Hexo + Github 组合。不仅因为免费开源，而且有许多美观的主题可选，还可以学到许多技能，简直一举多得！
 
 ## 啰嗦的简介

@@ -203,6 +203,8 @@ hexo d -g    //生成博客静态页面，并将资源上传同步到远程博�
 ```
 过一段时间，就可以访问自己的博客网站查看更新后的博客内容了。
 ## 他山之石
-- [如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
-- [网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)
-- [如何解决github+Hexo的博客多终端同步问题](https://blog.csdn.net/Monkey_LZL/article/details/60870891)
+1、[如何搭建个人博客 ？Hexo + GitHub 是一个不错的选择](https://www.jianshu.com/p/eded1dd2d794)
+2、[网站访问量统计 | hexo](https://blog.csdn.net/qw8880000/article/details/80235391)
+3、[如何解决github+Hexo的博客多终端同步问题](https://blog.csdn.net/Monkey_LZL/article/details/60870891)
+4、[hexo生成博文插入图片](https://blog.csdn.net/sugar_rainbow/article/details/57415705)
+5、[hexo博客图片问题](https://www.jianshu.com/p/c2ba9533088a)

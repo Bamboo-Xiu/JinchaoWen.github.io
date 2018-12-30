@@ -1,8 +1,8 @@
---- 
+---
 title: Flutter实践——AndroidStudio环境初体验
 date: 2018-12-29 22:38:47
 tags:
---- 
+---
 &emsp;&emsp;这是一篇菜鸟萌新初次上手Flutter的实践过程记录，老鸟请自行略过哈~最近大家都在说Flutter，还不是因为Google爸爸刚刚发布了Flutter 1.0 版本，简单了解了下，类似于微信小程序等等的一种跨平台解决方案，操作流畅度据说不管是iOS，还是Android，都可以“如丝般顺滑”，这么腻害？赶紧入坑看一看~
 
 ## Flutter简介

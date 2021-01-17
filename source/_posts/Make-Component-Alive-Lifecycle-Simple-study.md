@@ -1,6 +1,12 @@
+---
+title: 让你的组件“活”起来！—— Lifecycle 浅析
+date: 2020-04-06 17:42:43
+tags: Android World
+---
+
 Lifecycle 是 Android Jetpack 工具包中的一个工具库，Jetpack 中的工具可以分为四个部分：架构（Architecture）、基础（Foundation）、行为（Behavior）、界面（UI）。
 
-![Jetpack 四大组成部分](https://upload-images.jianshu.io/upload_images/3623770-fe962bb025c0b001.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Jetpack 四大组成部分](Make-Component-Alive-Lifecycle-Simple-study/1.png)
 
 其中，架构部分是 Jetpack 工具包的精华所在，大家耳熟能详的 DataBinding、LiveData、ViewModel等都是属于 Architecture 架构部分。Lifecycle 的地位就可想而知了。
 
@@ -59,7 +65,7 @@ Lifecycle 是 Android Jetpack 工具包中的一个工具库，Jetpack 中的工
 
 大体的思想就是一个观察者模式，具有生命周期的 Activity、Fragment 等作为被观察者；需要在不同的生命周期中执行不同的业务逻辑的功能组件作为观察者，当观察者监听到生命周期发生变化时，执行相应的业务逻辑。具有生命周期的 Activity、Fragment 等，在下文中我们用 生命周期持有者（LifecycleOwner）来称呼；我们自己开发的需要依赖于生命周期的功能组件，在下文中用 生命周期观察者（LifecycleObserver）进行称呼。
 
-##2.1 引入依赖
+## 2.1 引入依赖
 如果是非 AndroidX 项目，则引入：
 ```
 implementation "android.arch.lifecycle:extensions:1.1.1"
@@ -101,7 +107,7 @@ class MyLocationListener implements LifecycleObserver {
     }
 }
 ```
-##2.3 生命周期持有者添加观察者
+## 2.3 生命周期持有者添加观察者
 在 Android 中具有生命周期的一般是 Activity、Fragment，先通过 getLifecycle 方法获得 Lifecycle 生命周期对象，Lifecycle 对象使用 addObserver 方法给自己添加观察者，即 MyLocationListener。这样一来，当 Lifecycle 生命周期发生变化，MyLocationListener 就会收到通知，做相应的操作。
 ```
 public class MainActivity extends AppCompatActivity {
@@ -126,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 ```
 那么，这种观察者模式是怎样建立起来的呢？我们可以去看看 Jetpack 中 Lifecycle 相关源码。  
 
-#3、Lifecycle 源码浅析
+# 3、Lifecycle 源码浅析
 下面的源码分析是基于 lifecycle-runtime:2.1.0、lifecycle-common:2.1.0 版本。从 getLifecycle() 方法进入，发现是来到了 ComponentActivity 中，ComponentActivity 就是 Activity 的基类，代码如下：
 ```
     // ComponentActivity.java 类
@@ -211,7 +217,7 @@ public abstract class Lifecycle {
 再来看看 LifecycleRegistry 类具体实现了 Lifecycle 中的哪些方法。
 
 
-##3.1 LifecycleRegistry 类具体实现
+## 3.1 LifecycleRegistry 类具体实现
 首先，它内部是用一个类似 Map 的数据结构来存储添加的生命周期观察者的：
 ```
 private FastSafeIterableMap<LifecycleObserver, ObserverWithState> mObserverMap =
@@ -314,7 +320,8 @@ static State getStateAfter(Event event) {
     }
 ```
 看代码可能会觉得纳闷，为啥 ON_STOP 事件之后进入 CREATED 状态？我理解的是官方考虑到 CREATED 和 停止状态（STOPPED）可以合并为同一个状态，CREATED 状态其实就是 STARTED 状态前的一种状态，也就是 停止状态（STOPPED）。可以参考官方文档的这张图帮助理解：  
-![图1 构成生命周期的状态和事件](https://upload-images.jianshu.io/upload_images/3623770-5660bacad8bb2cee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)   所以，一个完整的生命周期过程是：从 Initialized 开始，到 Resumed；再从 Resumed 到 Destroyed 结束。在图上就是从左到右，再从右到左。
+![图2 构成生命周期的状态和事件](Make-Component-Alive-Lifecycle-Simple-study/2.png)   
+所以，一个完整的生命周期过程是：从 Initialized 开始，到 Resumed；再从 Resumed 到 Destroyed 结束。在图上就是从左到右，再从右到左。
 
 拿到下一个状态值后，再调用 moveToState 方法将生命周期持有者的状态切换到新的状态值。   
 ```
@@ -414,7 +421,7 @@ private void moveToState(State next) {
 ```
 仔细看 downEvent 方法中的每个状态对应的返回事件，结合之前的状态事件流程图图1，可以发现 downEvent 方法处理的是 state 状态后接下来发生的 event，对应图1 中从右向左的过程，不考虑向左的事件流程。这样做就可以将观察者的 state 逐渐减小，直至与当前生命周期持有者的状态值（mState）相同。如图2所示： 
 
-![图2 downEvent 方法减小 state 值示意图](https://upload-images.jianshu.io/upload_images/3623770-40138d733a7529b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![图3 downEvent 方法减小 state 值示意图](Make-Component-Alive-Lifecycle-Simple-study/3.png)
 
 对应地，还有个 upEvent 方法，这个方法会不会就是处理图1 中从左到右的过程呢？查看代码，果然如此：
 ```
@@ -471,10 +478,10 @@ private void moveToState(State next) {
 ```
 与 backwardPass 方法相反，forwardPass 方法是通过一个递增迭代器，从最初添加的观察者开始一直遍历到最近添加的观察者，依次更改所有观察者的状态。第一层 while 循环就是遍历所有的观察者；第二层 while 循环里就是将每个观察者的状态逐步地更新成与 LifecycleOwner 的状态 mState 一样，并将 event 事件分发。
 
-##3.2 ReportFragment 类简述
+## 3.2 ReportFragment 类简述
 前文终于弄清楚了生命周期状态的更新与分发过程。再来看一看是在哪里调用 handleLifecycleEvent 方法开始处理生命周期事件的，如下图所示。
 
-![图3 handleLifecycleEvent 调用方汇总](https://upload-images.jianshu.io/upload_images/3623770-be1749bbfd92ef16.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![图4 handleLifecycleEvent 调用方汇总](Make-Component-Alive-Lifecycle-Simple-study/4.png)
 
 * Fragment 有自己的生命周期，所以它里面肯定会调用 handleLifecycleEvent 方法。
 * FragmentActivity 里面调用 handleLifecycleEvent 方法的对象，并不是 Activity 的 Lifecycle 对象，而是 Fragment 的 Lifecycle 对象，管理的是 Fragment 生命周期流转，从命名 mFragmentLifecycleRegistry 也可以看出来。

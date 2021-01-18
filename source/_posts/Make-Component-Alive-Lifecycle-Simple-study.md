@@ -298,7 +298,7 @@ public void handleLifecycleEvent(@NonNull Lifecycle.Event event) {
         State next = getStateAfter(event);    // 首先求出 执行 event 事件之后的生命周期 状态值 state
         moveToState(next);    // 然后将 state 设置为 新的生命周期状态
 }
-``` 
+```
 在 getStateAfter 方法中，求出在执行了 event 事件之后，生命周期的状态。具体的代码很简单：
 ```
 static State getStateAfter(Event event) {
@@ -320,7 +320,9 @@ static State getStateAfter(Event event) {
     }
 ```
 看代码可能会觉得纳闷，为啥 ON_STOP 事件之后进入 CREATED 状态？我理解的是官方考虑到 CREATED 和 停止状态（STOPPED）可以合并为同一个状态，CREATED 状态其实就是 STARTED 状态前的一种状态，也就是 停止状态（STOPPED）。可以参考官方文档的这张图帮助理解：  
+
 ![图2 构成生命周期的状态和事件](Make-Component-Alive-Lifecycle-Simple-study/2.png)   
+
 所以，一个完整的生命周期过程是：从 Initialized 开始，到 Resumed；再从 Resumed 到 Destroyed 结束。在图上就是从左到右，再从右到左。
 
 拿到下一个状态值后，再调用 moveToState 方法将生命周期持有者的状态切换到新的状态值。   
@@ -340,7 +342,7 @@ private void moveToState(State next) {
         sync();    // 将新的生命周期状态同步给所有的观察者
         mHandlingEvent = false;
     }
-```  
+```
 将自身的生命周期状态更新后，还得将新的状态同步给所有的观察者，这就是 sync 方法需要处理的。
 ```
     // 同步生命周期状态方法

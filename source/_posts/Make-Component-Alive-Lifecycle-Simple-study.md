@@ -1,6 +1,6 @@
 ---
 title: 让你的组件“活”起来！—— Lifecycle 浅析
-date: 2020-04-06 17:42:43
+date: 2021-01-17 17:42:43
 tags: Android World
 ---
 
@@ -8,7 +8,7 @@ Lifecycle 是 Android Jetpack 工具包中的一个工具库，Jetpack 中的工
 
 ![Jetpack 四大组成部分](Make-Component-Alive-Lifecycle-Simple-study/1.png)
 
-其中，架构部分是 Jetpack 工具包的精华所在，大家耳熟能详的 DataBinding、LiveData、ViewModel等都是属于 Architecture 架构部分。Lifecycle 的地位就可想而知了。
+其中，架构部分是 Jetpack 工具包的精华所在，大家耳熟能详的 DataBinding、LiveData、ViewModel等都是属于 Architecture 架构部分。Lifecycle 的地位就可想而知了。  
 
 # 1、背景
 众所周知，Activity 是有自己的生命周期的，从 onCreate 创建一直到 onDestroy 销毁，我们会在 Activity 的各个生命周期中做相应的处理，完成业务逻辑的开发工作。  比如，某些功能组件需要在 Activity 或者 Fragment 的某些生命周期函数中做一些初始化，资源回收等等操作。久而久之，Activity 中的代码体积就会变得臃肿，功能组件也与 Activity 耦合在一起了。
@@ -76,7 +76,7 @@ implementation 'androidx.appcompat:appcompat:1.2.0'
 ```
 如果只需要使用 Lifecycle，不需要其他的 ViewModel、LiveData等等的话，则只需要引入 lifecycle-runtime 包即可。
 
-##2.2 实现 Lifecycle 观察者
+## 2.2 实现 Lifecycle 观察者
 这个 Lifecycle 观察者就是我们自己开发的功能组件，加上 LifecycleObserver 接口就可以通过注解的方式来编码各个生命周期需要执行的业务逻辑。如代码所示：
 ```
 class MyLocationListener implements LifecycleObserver {
@@ -608,7 +608,7 @@ ReportFragment，专门用来分发生命周期 Event 事件的 Fragment，没�
 写的不错？点赞吧！你的鼓励，是我继续创作的最大动力！！！
 
 ps. 一个简单的 Demo：[https://gitee.com/xiuzhizhu/LifeCycleDemo](https://gitee.com/xiuzhizhu/LifeCycleDemo)
-##参考文献
+## 参考文献
 1、[Android Lifecycle 官方文档](https://developer.android.google.cn/topic/libraries/architecture/lifecycle?hl=zh_cn)    
 2、[https://juejin.cn/post/6893870636733890574#heading-13](https://juejin.cn/post/6893870636733890574#heading-13)     
 3、[https://juejin.cn/post/6850418115931537416](https://juejin.cn/post/6850418115931537416)   

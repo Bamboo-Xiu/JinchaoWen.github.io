@@ -1,7 +1,7 @@
 ---
-title: 5-Kotlin-Dynamic-agent-Learning-and-Practice
+title: Kotlin 动态代理学习与实践
 date: 2021-06-20 22:57:56
-tags: Android
+tags: Android World
 ---
 
 >最近接了个大项目，哈哈哈~ 文章终于出来啦~ 还好没胎死腹中。最近的感悟就是，做好小事，才有机会做大事，承担大项目！   
@@ -268,7 +268,7 @@ public class HouseAgentSmart {
         return mHouseOwner;
     }
 }
-```  
+```
 
 四、执行者调用
 ```
@@ -348,6 +348,7 @@ smartAgent?.visitHouse()
 smartAgent?.argueRent(500)
 smartAgent?.signAgreement()
 ```
+
 看到这里就有人要问了，咦？之前不是用 by 关键字就可以在 kotlin 中进行代理吗？为啥还需要像 Java 一样用 Proxy.newProxyInstance() 方法写代理的模式？这两种方式有什么区别？
 
 首先，这两种方式都可以在 Kotlin 中实现代理模式，但适用的场景有所不同。

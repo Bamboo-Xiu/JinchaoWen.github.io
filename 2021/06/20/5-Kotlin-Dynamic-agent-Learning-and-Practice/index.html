@@ -109,17 +109,17 @@
 
 
   <meta name="description" content="最近接了个大项目，哈哈哈~ 文章终于出来啦~ 还好没胎死腹中。最近的感悟就是，做好小事，才有机会做大事，承担大项目！这次的文章本来想写 Kotlin 学习笔记2，结果写着写着发现动态代理这块之前还是没搞明白，所以就学了下 Kotlin 中的代理模式写法，发现东西有点多，遂独自成文，欢迎大家拍砖！  1. 引子动态代理主要是用来干什么的？通俗一点，就是你在调用其他类的一些方法时，想加入你自己的一些">
-<meta name="keywords" content="Android">
+<meta name="keywords" content="Android World">
 <meta property="og:type" content="article">
-<meta property="og:title" content="5-Kotlin-Dynamic-agent-Learning-and-Practice">
+<meta property="og:title" content="Kotlin 动态代理学习与实践">
 <meta property="og:url" content="http://yoursite.com/2021/06/20/5-Kotlin-Dynamic-agent-Learning-and-Practice/index.html">
 <meta property="og:site_name" content="Bamboo&#39;s Courtyard Time">
 <meta property="og:description" content="最近接了个大项目，哈哈哈~ 文章终于出来啦~ 还好没胎死腹中。最近的感悟就是，做好小事，才有机会做大事，承担大项目！这次的文章本来想写 Kotlin 学习笔记2，结果写着写着发现动态代理这块之前还是没搞明白，所以就学了下 Kotlin 中的代理模式写法，发现东西有点多，遂独自成文，欢迎大家拍砖！  1. 引子动态代理主要是用来干什么的？通俗一点，就是你在调用其他类的一些方法时，想加入你自己的一些">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2021/06/20/5-Kotlin-Dynamic-agent-Learning-and-Practice/pic1.jpg">
-<meta property="og:updated_time" content="2021-06-20T15:06:44.387Z">
+<meta property="og:updated_time" content="2021-06-20T15:45:47.665Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="5-Kotlin-Dynamic-agent-Learning-and-Practice">
+<meta name="twitter:title" content="Kotlin 动态代理学习与实践">
 <meta name="twitter:description" content="最近接了个大项目，哈哈哈~ 文章终于出来啦~ 还好没胎死腹中。最近的感悟就是，做好小事，才有机会做大事，承担大项目！这次的文章本来想写 Kotlin 学习笔记2，结果写着写着发现动态代理这块之前还是没搞明白，所以就学了下 Kotlin 中的代理模式写法，发现东西有点多，遂独自成文，欢迎大家拍砖！  1. 引子动态代理主要是用来干什么的？通俗一点，就是你在调用其他类的一些方法时，想加入你自己的一些">
 <meta name="twitter:image" content="http://yoursite.com/2021/06/20/5-Kotlin-Dynamic-agent-Learning-and-Practice/pic1.jpg">
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title>5-Kotlin-Dynamic-agent-Learning-and-Practice | Bamboo's Courtyard Time</title>
+  <title>Kotlin 动态代理学习与实践 | Bamboo's Courtyard Time</title>
   
 
 
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">5-Kotlin-Dynamic-agent-Learning-and-Practice
+          <h1 class="post-title" itemprop="name headline">Kotlin 动态代理学习与实践
               
             
           </h1>
@@ -384,7 +384,7 @@
                 
               
 
-              <time title="创建时间：2021-06-20 22:57:56 / 修改时间：23:06:44" itemprop="dateCreated datePublished" datetime="2021-06-20T22:57:56+08:00">2021-06-20</time>
+              <time title="创建时间：2021-06-20 22:57:56 / 修改时间：23:45:47" itemprop="dateCreated datePublished" datetime="2021-06-20T22:57:56+08:00">2021-06-20</time>
             
 
             
@@ -458,49 +458,10 @@
 <p>三、建立代理关系<br>这个是代理的核心，需要一个实现了 InvocationHandler 接口的类：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// code 11</span><br><span class="line">public class AgentHandler implements InvocationHandler &#123;</span><br><span class="line"></span><br><span class="line">    private Object target;</span><br><span class="line">    public AgentHandler(Object target) &#123;</span><br><span class="line">        this.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</span><br><span class="line">        System.out.println(&quot;方法执行前&quot;);</span><br><span class="line">        Object result = method.invoke(target, args);</span><br><span class="line">        System.out.println(&quot;方法执行后&quot;);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接口中的 invoke 方法比较重要。方法体中的 Object 类型的 proxy 是最终生成的<strong>代理对象</strong>；Method 类型的 method 是被代理的方法；Object[] 数组类型的 args 是被代理方法执行所需要的参数。target 对象就是传入的代理类。在这个类中，可以在 invoke 方法前后插入我们需要执行的代码，这样做可以使得被代理类对象在执行任何方法时，都会执行我们插入的代码。例如，我们可以在 invoke 方法前后记录下时间戳，这样就可以得出被代理类对象执行的每一个方法的执行时长。    </p>
-<p>然后代理类利用 InvocationHandler 进行代理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// code 12</span><br><span class="line">public class HouseAgentSmart &#123;</span><br><span class="line">    private IRentHouse mHouseOwner;    // 房东，被代理类对象</span><br><span class="line">    public HouseAgentSmart(IRentHouse houseOwner) &#123;</span><br><span class="line">        mHouseOwner = houseOwner;</span><br><span class="line">        mHouseOwner = (IRentHouse) Proxy.newProxyInstance(</span><br><span class="line">                houseOwner.getClass().getClassLoader(),</span><br><span class="line">                new Class[]&#123;IRentHouse.class&#125;,</span><br><span class="line">                new AgentHandler(mHouseOwner)    // 将被代理对象传入</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IRentHouse getAccess() &#123;    // 用于返回代理对象</span><br><span class="line">        return mHouseOwner;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">四、执行者调用</span><br></pre></td></tr></table></figure></p>
-<p>// code 13<br>IRentHouse smartAgent = new HouseAgentSmart(new HouseOwner()).getAccess();<br>        smartAgent.visitHouse();<br>        smartAgent.argueRent(400);<br>        smartAgent.signAgreement();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 4. Kotlin 动态代理实现</span><br><span class="line">上面是动态代理的 Java 实现，那么如何用 Kotlin 实现？</span><br><span class="line">其实是一样的，只不过是编程语言的语法不同</span><br></pre></td></tr></table></figure></p>
-<p>// code 14<br>// IRentHouseKT.kt    1、首先还是定义接口<br>interface IRentHouseKT {<br>    // 带领租客看房<br>    fun visitHouse()</p>
-<pre><code>// 讨价还价
-fun argueRent(rent : Int)
-
-// 签合同
-fun signAgreement()
-</code></pre><p>}</p>
-<p>// HouseOwnerKT.kt    2、然后是被代理类，实现接口<br>class HouseOwnerKT : IRentHouseKT {<br>    override fun visitHouse() {<br>        println(“HouseOwner 带领看房，介绍房屋特点”)<br>    }</p>
-<pre><code>override fun argueRent(rent: Int) {
-    println(&quot;HouseOwner 提出租金为：$rent&quot;)
-}
-
-override fun signAgreement() {
-    println(&quot;HouseOwner 签合同&quot;)
-}
-</code></pre><p>}</p>
-<p>// AgentHandlerKT.kt    3、建立代理关系<br>class AgentHandlerKT : InvocationHandler {</p>
-<pre><code>private var mTarget : Any? = null
-constructor(target : Any?) {
-    this.mTarget = target
-}
-
-override fun invoke(proxy: Any?, method: Method, args: Array&lt;out Any&gt;?): Any? {
-    println(&quot;方法执行前&quot;)
-    // 因为传来的参数 args 是不确定的，所以用 *args.orEmpty() 传参
-    val result = method.invoke(mTarget, *args.orEmpty())
-    println(&quot;方法执行后&quot;)
-    return result
-}
-</code></pre><p>}</p>
-<p>// HouseAgentSmartKT.kt    4、代理类，通过 AgentHandlerKT 得到代理关系<br>class HouseAgentSmartKT {<br>    var mHouseOwner : IRentHouseKT? = null</p>
-<pre><code>constructor(houseOwner : IRentHouseKT) {
-    mHouseOwner = houseOwner
-    mHouseOwner = Proxy.newProxyInstance(
-            houseOwner.javaClass.classLoader,
-            arrayOf(IRentHouseKT::class.java),
-            AgentHandlerKT(mHouseOwner)
-    ) as IRentHouseKT
-}
-</code></pre><p>}</p>
-<p>// 调用方进行调用<br>val smartAgent = HouseAgentSmartKT(HouseOwnerKT()).mHouseOwner<br>smartAgent?.visitHouse()<br>smartAgent?.argueRent(500)<br>smartAgent?.signAgreement()<br><code>`</code><br>看到这里就有人要问了，咦？之前不是用 by 关键字就可以在 kotlin 中进行代理吗？为啥还需要像 Java 一样用 Proxy.newProxyInstance() 方法写代理的模式？这两种方式有什么区别？</p>
+<p>然后代理类利用 InvocationHandler 进行代理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// code 12</span><br><span class="line">public class HouseAgentSmart &#123;</span><br><span class="line">    private IRentHouse mHouseOwner;    // 房东，被代理类对象</span><br><span class="line">    public HouseAgentSmart(IRentHouse houseOwner) &#123;</span><br><span class="line">        mHouseOwner = houseOwner;</span><br><span class="line">        mHouseOwner = (IRentHouse) Proxy.newProxyInstance(</span><br><span class="line">                houseOwner.getClass().getClassLoader(),</span><br><span class="line">                new Class[]&#123;IRentHouse.class&#125;,</span><br><span class="line">                new AgentHandler(mHouseOwner)    // 将被代理对象传入</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IRentHouse getAccess() &#123;    // 用于返回代理对象</span><br><span class="line">        return mHouseOwner;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>四、执行者调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// code 13</span><br><span class="line">IRentHouse smartAgent = new HouseAgentSmart(new HouseOwner()).getAccess();</span><br><span class="line">        smartAgent.visitHouse();</span><br><span class="line">        smartAgent.argueRent(400);</span><br><span class="line">        smartAgent.signAgreement();</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-Kotlin-动态代理实现"><a href="#4-Kotlin-动态代理实现" class="headerlink" title="4. Kotlin 动态代理实现"></a>4. Kotlin 动态代理实现</h2><p>上面是动态代理的 Java 实现，那么如何用 Kotlin 实现？<br>其实是一样的，只不过是编程语言的语法不同<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">// code 14</span><br><span class="line">// IRentHouseKT.kt    1、首先还是定义接口</span><br><span class="line">interface IRentHouseKT &#123;</span><br><span class="line">    // 带领租客看房</span><br><span class="line">    fun visitHouse()</span><br><span class="line"></span><br><span class="line">    // 讨价还价</span><br><span class="line">    fun argueRent(rent : Int)</span><br><span class="line"></span><br><span class="line">    // 签合同</span><br><span class="line">    fun signAgreement()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// HouseOwnerKT.kt    2、然后是被代理类，实现接口</span><br><span class="line">class HouseOwnerKT : IRentHouseKT &#123;</span><br><span class="line">    override fun visitHouse() &#123;</span><br><span class="line">        println(&quot;HouseOwner 带领看房，介绍房屋特点&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun argueRent(rent: Int) &#123;</span><br><span class="line">        println(&quot;HouseOwner 提出租金为：$rent&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun signAgreement() &#123;</span><br><span class="line">        println(&quot;HouseOwner 签合同&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// AgentHandlerKT.kt    3、建立代理关系</span><br><span class="line">class AgentHandlerKT : InvocationHandler &#123;</span><br><span class="line"></span><br><span class="line">    private var mTarget : Any? = null</span><br><span class="line">    constructor(target : Any?) &#123;</span><br><span class="line">        this.mTarget = target</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun invoke(proxy: Any?, method: Method, args: Array&lt;out Any&gt;?): Any? &#123;</span><br><span class="line">        println(&quot;方法执行前&quot;)</span><br><span class="line">        // 因为传来的参数 args 是不确定的，所以用 *args.orEmpty() 传参</span><br><span class="line">        val result = method.invoke(mTarget, *args.orEmpty())</span><br><span class="line">        println(&quot;方法执行后&quot;)</span><br><span class="line">        return result</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// HouseAgentSmartKT.kt    4、代理类，通过 AgentHandlerKT 得到代理关系</span><br><span class="line">class HouseAgentSmartKT &#123;</span><br><span class="line">    var mHouseOwner : IRentHouseKT? = null</span><br><span class="line"></span><br><span class="line">    constructor(houseOwner : IRentHouseKT) &#123;</span><br><span class="line">        mHouseOwner = houseOwner</span><br><span class="line">        mHouseOwner = Proxy.newProxyInstance(</span><br><span class="line">                houseOwner.javaClass.classLoader,</span><br><span class="line">                arrayOf(IRentHouseKT::class.java),</span><br><span class="line">                AgentHandlerKT(mHouseOwner)</span><br><span class="line">        ) as IRentHouseKT</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 调用方进行调用</span><br><span class="line">val smartAgent = HouseAgentSmartKT(HouseOwnerKT()).mHouseOwner</span><br><span class="line">smartAgent?.visitHouse()</span><br><span class="line">smartAgent?.argueRent(500)</span><br><span class="line">smartAgent?.signAgreement()</span><br></pre></td></tr></table></figure></p>
+<p>看到这里就有人要问了，咦？之前不是用 by 关键字就可以在 kotlin 中进行代理吗？为啥还需要像 Java 一样用 Proxy.newProxyInstance() 方法写代理的模式？这两种方式有什么区别？</p>
 <p>首先，这两种方式都可以在 Kotlin 中实现代理模式，但适用的场景有所不同。<br>1、by 关键字实现的代理模式。使用起来更加方便，代理的粒度更小，可以根据代理类自身需要对某些被代理类中的方法进行重写；<br>2、Proxy.newProxyInstance() 方法实现的代理模式。实现比较繁琐，代理的粒度大，一旦代理，就是代理所有的方法。可以在原方法前后插入自己想要执行的代码，适用于埋点记录 log 日志、记录方法执行用时等。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
 <li><a href="https://www.cnblogs.com/tera/p/13911819.html" target="_blank" rel="noopener">Java动态代理——框架中的应用场景和基本原理</a></li>
@@ -530,7 +491,7 @@ override fun invoke(proxy: Any?, method: Method, args: Array&lt;out Any&gt;?): A
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
+            <a href="/tags/Android-World/" rel="tag"># Android World</a>
           
         </div>
       
@@ -642,7 +603,7 @@ override fun invoke(proxy: Any?, method: Method, args: Array&lt;out Any&gt;?): A
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
@@ -678,7 +639,7 @@ override fun invoke(proxy: Any?, method: Method, args: Array&lt;out Any&gt;?): A
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引子"><span class="nav-number">1.</span> <span class="nav-text">1. 引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-代理模式"><span class="nav-number">2.</span> <span class="nav-text">2. 代理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-代理模式的基本要素"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 代理模式的基本要素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-租房代码实例-Java-版"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 租房代码实例 - Java 版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-租房代码实例-Kotlin-版"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 租房代码实例 - Kotlin 版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Java-动态代理实现"><span class="nav-number">3.</span> <span class="nav-text">3. Java 动态代理实现</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number"></span> <span class="nav-text">参考文献</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引子"><span class="nav-number">1.</span> <span class="nav-text">1. 引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-代理模式"><span class="nav-number">2.</span> <span class="nav-text">2. 代理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-代理模式的基本要素"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 代理模式的基本要素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-租房代码实例-Java-版"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 租房代码实例 - Java 版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-租房代码实例-Kotlin-版"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 租房代码实例 - Kotlin 版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Java-动态代理实现"><span class="nav-number">3.</span> <span class="nav-text">3. Java 动态代理实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Kotlin-动态代理实现"><span class="nav-number">4.</span> <span class="nav-text">4. Kotlin 动态代理实现</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number"></span> <span class="nav-text">参考文献</span></a></li></div>
             
 
           </div>

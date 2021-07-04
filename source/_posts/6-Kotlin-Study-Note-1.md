@@ -238,7 +238,7 @@ class SingleInstance private constructor() {
 还没看够？来我的公众号看看？搜索： **俢之竹**   
 或者扫一扫下面的二维码：  
 
-![俢之竹公众号](gzh.jpg)   
+![俢之竹公众号](6-Kotlin-Study-Note-1/pic2.jpg)   
 
 来知乎逛逛也是可以的，搜索： **俢之竹**   
 

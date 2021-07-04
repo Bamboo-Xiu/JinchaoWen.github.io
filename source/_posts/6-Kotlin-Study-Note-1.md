@@ -94,17 +94,17 @@ Test.say("Good Morning~")
 ```
 Test.INSTANCE.say("Good Morning~")
 ```
-在 kotlin 中调用一个 Java 类，不能像在 Java 中一样写成这样： Test.class ，而是要这样写：```Test::class.java```。另外 Kotlin 类是被编译为 KClass 文件，而不是 class 文件。所以，在 Kotlin 代码里，如果要调用一个 Kotlin 的类，则不用加 .java 后缀，而是直接写成：```Util::class```。
+在 kotlin 中调用一个 Java 类，不能像在 Java 中一样写成这样： Test.class ，而是要这样写：Test::class.java。另外 Kotlin 类是被编译为 KClass 文件，而不是 class 文件。所以，在 Kotlin 代码里，如果要调用一个 Kotlin 的类，则不用加 .java 后缀，而是直接写成：Util::class。
 
 ## 6. Java 与 Kotlin 之间的冲突解决
 1. 关键字冲突。比如 in 这个关键字，在 Kotlin 中是一个关键字，如果要引用 Java 类中一个叫 in 的对象时，则需要用反引号 ` 解决这个冲突：
 ```
 Utils.`in`   // 在 Utils.java 中，in 是一个属性：public static int in = 100;
 ```
-2. Kotlin 没有封装类。Kotlin 中没有像 Integer 的封装类，只有 Int 等基本类型，只有通过反射的方式才能调用或用于鉴别 Integer 的封装类类型。   
+2. Kotlin 没有封装类。Kotlin 中没有像 Integer 的封装类，只有 Int 等基本类型，只有通过反射的方式才能调用或用于鉴别 Integer 的封装类类型。
 这里给出几个网上应用的例子，实际中使用时，再补充。  
-1）在 kotlin 代码中使用 Integer.class。假如 Java 类中有方法：```void func(Class clazz){}```，那么在 Kotlin 中如果需要传入一个 Integer.class 该怎么办？正确的做法是：```func(Int::class.javaObjectType)```，而不是```func(Int::class.java)```  
-2）```Int::class.java```指向的是 kotlin 标准库中的 Int.kt ；```Int::class.javaObjectType```指向的是 JDK 里的 Integer.java 类。   
+1）在 kotlin 代码中使用 Integer.class。假如 Java 类中有方法：```void func(Class clazz){}```，那么在 Kotlin 中如果需要传入一个 Integer.class 该怎么办？正确的做法是：```func(Int::class.javaObjectType)```，而不是```func(Int::class.java)```
+2）```Int::class.java```指向的是 kotlin 标准库中的 Int.kt ；```Int::class.javaObjectType```指向的是 JDK 里的 Integer.java 类。
 3. Kotlin 是空安全的。Kotlin 如果调用了 Java 中的代码，则需要用 ***? 的类型来接收，这样可以防止空指针异常。例如 Java 中是 String 类型的对象，要在 Kotlin 中使用的话，需要用 String? 类型来接收。
 4. Kotlin 没有静态变量和静态方法。没有静态方法的问题，可以在方法前添加 @JvmStatic 注解来解决：
 ```

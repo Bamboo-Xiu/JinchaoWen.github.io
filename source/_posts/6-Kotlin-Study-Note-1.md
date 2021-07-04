@@ -103,8 +103,8 @@ Utils.`in`   // 在 Utils.java 中，in 是一个属性：public static int in =
 ```
 2. Kotlin 没有封装类。Kotlin 中没有像 Integer 的封装类，只有 Int 等基本类型，只有通过反射的方式才能调用或用于鉴别 Integer 的封装类类型。
 这里给出几个网上应用的例子，实际中使用时，再补充。  
-1）在 kotlin 代码中使用 Integer.class。假如 Java 类中有方法：```void func(Class clazz){}```，那么在 Kotlin 中如果需要传入一个 Integer.class 该怎么办？正确的做法是：```func(Int::class.javaObjectType)```，而不是```func(Int::class.java)```
-2）```Int::class.java```指向的是 kotlin 标准库中的 Int.kt ；```Int::class.javaObjectType```指向的是 JDK 里的 Integer.java 类。
+1）在 kotlin 代码中使用 Integer.class 。假如 Java 类中有方法： void func(Class clazz){} ，那么在 Kotlin 中如果需要传入一个 Integer.class 该怎么办？正确的做法是： func(Int::class.javaObjectType) ，而不是 func(Int::class.java)
+2）Int::class.java 指向的是 kotlin 标准库中的 Int.kt ； Int::class.javaObjectType 指向的是 JDK 里的 Integer.java 类。
 3. Kotlin 是空安全的。Kotlin 如果调用了 Java 中的代码，则需要用 ***? 的类型来接收，这样可以防止空指针异常。例如 Java 中是 String 类型的对象，要在 Kotlin 中使用的话，需要用 String? 类型来接收。
 4. Kotlin 没有静态变量和静态方法。没有静态方法的问题，可以在方法前添加 @JvmStatic 注解来解决：
 ```
@@ -115,7 +115,7 @@ object Utils {
     }
 }
 ```
-当然也可以将方法写在类的 ```companion object {}```中。
+当然也可以将方法写在类的 companion object {} 中。
 
 ## 7. 扩展函数
 kotlin 支持给原有的类添加一些扩展的功能，就是通过扩展函数来实现的。可以针对第三方库中对象添加一些我们需要的方法。例如我们可以扩展一下 User 类中的方法：
@@ -140,7 +140,7 @@ fun main(args: Array<String>) {
     Dog().printName(Dog())    // 打印的结果是 “animal”，这说明扩展函数不具备运行时多态的特点。
 }
 ```
-将这段代码反编译成 Java 代码，可以看到最终调用的 ```Dog().printName(Dog())``` 这段代码，被编译成了 ```printName((Animal)(new Dog()), (Animal)(new Dog()));``` ，即最后调用会将 Dog 对象强转为 Animal 对象，这样就不具有多态的特点了。
+将这段代码反编译成 Java 代码，可以看到最终调用的 Dog().printName(Dog()) 这段代码，被编译成了 printName((Animal)(new Dog()), (Animal)(new Dog())); ，即最后调用会将 Dog 对象强转为 Animal 对象，这样就不具有多态的特点了。
 
 ## 8. Lambda 闭包
 1. Lambda 闭包声明，可以为：
